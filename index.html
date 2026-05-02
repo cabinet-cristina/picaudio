@@ -18,55 +18,6 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
 
 #bgCanvas { position:fixed; inset:0; width:100%; height:100%; z-index:0; }
 
-/* ===== ECRAN VARSTA ===== */
-.varsta-screen {
-  position:fixed; inset:0; z-index:50;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  gap:2rem;
-  transition:opacity 0.5s ease;
-}
-.varsta-screen.hidden { opacity:0; pointer-events:none; }
-
-.varsta-intrebare {
-  font-family:'Fraunces',serif;
-  font-size:clamp(1rem,2.5vw,1.4rem);
-  font-weight:300; font-style:italic;
-  color:rgba(255,255,255,0.7);
-  text-align:center;
-}
-
-.varsta-optiuni {
-  display:flex;
-  gap:1.5rem;
-  align-items:flex-end;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-
-.varsta-btn {
-  display:flex; flex-direction:column; align-items:center; gap:0.6rem;
-  cursor:pointer; background:none; border:none;
-  -webkit-tap-highlight-color:transparent;
-  transition:transform 0.2s;
-}
-.varsta-btn:hover, .varsta-btn:active { transform:scale(1.06); }
-.varsta-btn svg { filter:drop-shadow(0 12px 24px rgba(0,0,0,0.3)); }
-.varsta-btn-label {
-  font-family:'Fraunces',serif;
-  font-size:0.75rem; font-weight:300; font-style:italic;
-  color:rgba(255,255,255,0.55); letter-spacing:0.08em;
-}
-
-.varsta-skip {
-  font-family:'Fraunces',serif;
-  font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase;
-  color:rgba(255,255,255,0.2); cursor:pointer; font-style:italic;
-  background:none; border:none;
-  -webkit-tap-highlight-color:transparent;
-}
-.varsta-skip:hover { color:rgba(255,255,255,0.4); }
-
 .stage {
   position:fixed; inset:0; z-index:1;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -231,151 +182,9 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
 
 <canvas id="bgCanvas"></canvas>
 
-<!-- ECRAN VARSTA — apare la a doua apasare pe PIC -->
-<div class="varsta-screen hidden" id="varstaScreen">
-  <div class="varsta-intrebare">pentru cine e pauza?</div>
-  <div class="varsta-optiuni">
-  <div class="selectie-pic">
-    <svg width="160" height="148" viewBox="0 0 240 215" fill="none">
-      <defs>
-        <radialGradient id="bGsel" cx="50%" cy="65%" r="65%">
-          <stop offset="0%" stop-color="#FFB060"/>
-          <stop offset="55%" stop-color="#FF8030"/>
-          <stop offset="100%" stop-color="#E05010"/>
-        </radialGradient>
-        <radialGradient id="cGsel" cx="50%" cy="95%" r="55%">
-          <stop offset="0%" stop-color="rgba(255,200,100,0.32)"/>
-          <stop offset="100%" stop-color="rgba(255,200,100,0)"/>
-        </radialGradient>
-        <radialGradient id="ckGsel" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="rgba(255,80,40,0.42)"/>
-          <stop offset="100%" stop-color="rgba(255,80,40,0)"/>
-        </radialGradient>
-      </defs>
-      <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#bGsel)"/>
-      <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#cGsel)"/>
-      <ellipse cx="44" cy="120" rx="26" ry="20" fill="url(#ckGsel)"/>
-      <ellipse cx="196" cy="120" rx="26" ry="20" fill="url(#ckGsel)"/>
-      <circle cx="88" cy="108" r="25" fill="#2d1060"/>
-      <ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-      <circle cx="152" cy="108" r="25" fill="#2d1060"/>
-      <ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-      <line x1="70" y1="86" x2="68" y2="78" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="79" y1="82" x2="78" y2="74" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="88" y1="80" x2="88" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="97" y1="81" x2="99" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="105" y1="84" x2="109" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="131" y1="84" x2="127" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="140" y1="81" x2="138" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="149" y1="80" x2="149" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="158" y1="81" x2="160" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="167" y1="84" x2="171" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
-    </svg>
-  </div>
 
-  <div class="selectie-intrebare">pentru cine e pauza?</div>
 
-  <div class="selectie-optiuni">
-    <button class="selectie-btn" onclick="alegeaMod('eu')">
-      <div class="selectie-btn-dot" style="background:#FF8030"></div>
-      <div class="selectie-btn-label">pentru mine</div>
-      <div class="selectie-btn-varsta">adult</div>
-    </button>
-    <button class="selectie-btn" onclick="alegeaMod('mic')">
-      <div class="selectie-btn-dot" style="background:#FFB3C6"></div>
-      <div class="selectie-btn-label">pentru copilul meu</div>
-      <div class="selectie-btn-varsta">4 – 7 ani</div>
-    </button>
-    <button class="selectie-btn" onclick="alegeaMod('mijlociu')">
-      <div class="selectie-btn-dot" style="background:#F5C842"></div>
-      <div class="selectie-btn-label">pentru copilul meu</div>
-      <div class="selectie-btn-varsta">8 – 13 ani</div>
-    </button>
-    <!-- 4-7 ani — roz piersică -->
-    <button class="varsta-btn" onclick="alegeaMod('mic')">
-      <svg width="140" height="130" viewBox="0 0 240 215" fill="none">
-      <defs><radialGradient id="bGmic" cx="50%" cy="65%" r="65%">
-        <stop offset="0%" stop-color="#FFD6E0"/><stop offset="55%" stop-color="#FFB3C6"/><stop offset="100%" stop-color="#FF8FAB"/>
-      </radialGradient><radialGradient id="ckmic" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="rgba(255,80,40,0.35)"/><stop offset="100%" stop-color="rgba(255,80,40,0)"/>
-      </radialGradient></defs>
-      <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#bGmic)"/>
-      <ellipse cx="44" cy="120" rx="26" ry="20" fill="url(#ckmic)"/>
-      <ellipse cx="196" cy="120" rx="26" ry="20" fill="url(#ckmic)"/>
-      <circle cx="88" cy="108" r="25" fill="#2d1060"/><ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-      <circle cx="152" cy="108" r="25" fill="#2d1060"/><ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-      <line x1="70" y1="86" x2="68" y2="78" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="79" y1="82" x2="78" y2="74" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="88" y1="80" x2="88" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="97" y1="81" x2="99" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="105" y1="84" x2="109" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="131" y1="84" x2="127" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="140" y1="81" x2="138" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="149" y1="80" x2="149" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="158" y1="81" x2="160" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="167" y1="84" x2="171" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
-    </svg>
-      <div class="varsta-btn-label">4 – 7 ani</div>
-    </button>
-    <!-- 8-13 ani — galben cald -->
-    <button class="varsta-btn" onclick="alegeaMod('mijlociu')">
-      <svg width="120" height="112" viewBox="0 0 240 215" fill="none">
-      <defs><radialGradient id="bGmij" cx="50%" cy="65%" r="65%">
-        <stop offset="0%" stop-color="#FFF3C0"/><stop offset="55%" stop-color="#F5C842"/><stop offset="100%" stop-color="#D4A000"/>
-      </radialGradient><radialGradient id="ckmij" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="rgba(255,80,40,0.35)"/><stop offset="100%" stop-color="rgba(255,80,40,0)"/>
-      </radialGradient></defs>
-      <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#bGmij)"/>
-      <ellipse cx="44" cy="120" rx="26" ry="20" fill="url(#ckmij)"/>
-      <ellipse cx="196" cy="120" rx="26" ry="20" fill="url(#ckmij)"/>
-      <circle cx="88" cy="108" r="25" fill="#2d1060"/><ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-      <circle cx="152" cy="108" r="25" fill="#2d1060"/><ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-      <line x1="70" y1="86" x2="68" y2="78" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="79" y1="82" x2="78" y2="74" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="88" y1="80" x2="88" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="97" y1="81" x2="99" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="105" y1="84" x2="109" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="131" y1="84" x2="127" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="140" y1="81" x2="138" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="149" y1="80" x2="149" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="158" y1="81" x2="160" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="167" y1="84" x2="171" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
-    </svg>
-      <div class="varsta-btn-label">8 – 13 ani</div>
-    </button>
-    <!-- 14-18 ani — albastru sfumato -->
-    <button class="varsta-btn" onclick="alegeaMod('adolescent')">
-      <svg width="130" height="120" viewBox="0 0 240 215" fill="none">
-      <defs><radialGradient id="bGadol" cx="50%" cy="65%" r="65%">
-        <stop offset="0%" stop-color="#C8DEFF"/><stop offset="55%" stop-color="#7BA7CC"/><stop offset="100%" stop-color="#4A7FA8"/>
-      </radialGradient><radialGradient id="ckadol" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="rgba(255,80,40,0.35)"/><stop offset="100%" stop-color="rgba(255,80,40,0)"/>
-      </radialGradient></defs>
-      <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#bGadol)"/>
-      <ellipse cx="44" cy="120" rx="26" ry="20" fill="url(#ckadol)"/>
-      <ellipse cx="196" cy="120" rx="26" ry="20" fill="url(#ckadol)"/>
-      <circle cx="88" cy="108" r="25" fill="#2d1060"/><ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-      <circle cx="152" cy="108" r="25" fill="#2d1060"/><ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-      <line x1="70" y1="86" x2="68" y2="78" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="79" y1="82" x2="78" y2="74" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="88" y1="80" x2="88" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="97" y1="81" x2="99" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="105" y1="84" x2="109" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="131" y1="84" x2="127" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="140" y1="81" x2="138" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="149" y1="80" x2="149" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="158" y1="81" x2="160" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="167" y1="84" x2="171" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
-    </svg>
-      <div class="varsta-btn-label">adolescent</div>
-    </button>
-  </div>
-  <button class="varsta-skip" onclick="alegeaMod('eu')">pentru mine · adult</button>
-</div>
+<button class="back-btn" id="backBtn" onclick="inchideContent()">✕</button>
 
 <div class="stage">
   <div class="pic-scene" id="picScene">
@@ -602,11 +411,11 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
   </div>
 </div>
 
-<div class="pic-text hidden" id="picText">
+<div class="pic-text" id="picText">
   <h1>cum te simți <em>azi?</em></h1>
 </div>
 
-<div class="hint hidden" id="hint">atinge-l pe PIC</div>
+<div class="hint" id="hint">atinge-l pe PIC</div>
 
 <div class="content-panel" id="contentPanel">
   <div class="content-title" id="contentTitle"></div>
@@ -740,97 +549,6 @@ const emotiiData = {
 
 let satelitiVisible = false;
 let ppAngle = 0;
-let modCurent = null;
-const moduriConfig = {
-  eu: {
-    picC1:'#FFB060', picC2:'#FF8030', picC3:'#E05010',
-    hint:'atinge-l pe PIC',
-    episoade: null // foloseste emotiiData default
-  },
-  mic: {
-    picC1:'#FFD6E0', picC2:'#FFB3C6', picC3:'#FF8FAB',
-    hint:'atinge-l pe PIC',
-    episoade: {
-      somn: {
-        title:'🌙 Somn liniștit',
-        c1:'#FFD6E0',c2:'#FFB3C6',c3:'#FF8FAB',
-        sub:'Povești și ghidaje pentru un somn liniștit. Pentru copii 4-7 ani.',
-        eps:[
-          {num:'S 01',title:'Pic cel mai rotund din Picopia',desc:'Undeva între lună și stele',dur:'8 min',free:true},
-          {num:'S 02',title:'Vox face mofturi',desc:'Supă de pietricele cu petale',dur:'8 min',free:false},
-          {num:'S 03',title:'Pic stinge lumina',desc:'Când luminile se sting',dur:'8 min',free:false},
-          {num:'S 04',title:'Pic se supără',desc:'Două picături supărate',dur:'8 min',free:false},
-          {num:'S 05',title:'Pic și steaua',desc:'O stea care cântă de leagăn',dur:'8 min',free:false},
-          {num:'S 06',title:'Pic de pufuleț',desc:'PIC găsește cel mai moale nor',dur:'8 min',free:false},
-          {num:'S 07',title:'Pic de vis',desc:'Intrăm în țara viselor',dur:'8 min',free:false},
-        ]
-      }
-    }
-  },
-  mijlociu: {
-    picC1:'#FFF3C0',picC2:'#F5C842',picC3:'#D4A000',
-    hint:'atinge-l pe PIC',
-    episoade: {
-      somn: {
-        title:'🌙 Somn liniștit',
-        c1:'#FFF3C0',c2:'#F5C842',c3:'#D4A000',
-        sub:'Aventuri audio pentru un somn odihnitor. Pentru copii 8-13 ani.',
-        eps:[
-          {num:'S 01',title:'Pic de aventură',desc:'PIC și pădurea magică de la capătul lumii',dur:'5 min',free:true},
-          {num:'S 02',title:'Pic de stele',desc:'PIC numără stelele până adoarme',dur:'5 min',free:false},
-          {num:'S 03',title:'Pic de nor',desc:'PIC găsește un nor moale și se așează pe el',dur:'5 min',free:false},
-          {num:'S 04',title:'Pic de cald',desc:'PIC se întoarce acasă după o zi lungă',dur:'5 min',free:false},
-          {num:'S 05',title:'Pic de pe lună',desc:'PIC și luna care îi arată lumea de sus',dur:'5 min',free:false},
-          {num:'S 06',title:'Pic de vis',desc:'PIC intră în țara viselor',dur:'5 min',free:false},
-          {num:'S 07',title:'Pic de dimineață',desc:'PIC se pregătește pentru o nouă aventură',dur:'5 min',free:false},
-        ]
-      }
-    }
-  },
-  adolescent: {
-    picC1:'#C8DEFF',picC2:'#7BA7CC',picC3:'#4A7FA8',
-    hint:'atinge-l pe PIC',
-    episoade: {
-      somn: {
-        title:'🌙 Somn liniștit',
-        c1:'#C8DEFF',c2:'#7BA7CC',c3:'#4A7FA8',
-        sub:'Pauze audio pentru un somn odihnitor. Pentru adolescenți 14-18 ani.',
-        eps:[
-          {num:'S 01',title:'Pic de respiro',desc:'O pauză de la tot ce apasă',dur:'8 min',free:true},
-          {num:'S 02',title:'Pic de liniște',desc:'Când gândurile devin prea multe',dur:'8 min',free:false},
-          {num:'S 03',title:'Pic de spațiu',desc:'Loc pentru tine, fără judecată',dur:'8 min',free:false},
-          {num:'S 04',title:'Pic de noapte',desc:'Sfârșitul zilei, începutul odihnei',dur:'8 min',free:false},
-          {num:'S 05',title:'Pic de claritate',desc:'Prin ceață, spre liniște',dur:'8 min',free:false},
-          {num:'S 06',title:'Pic de forță',desc:'Ce rămâne după o zi grea',dur:'8 min',free:false},
-          {num:'S 07',title:'Pic de mâine',desc:'Ancorare înainte de somn',dur:'8 min',free:false},
-        ]
-      }
-    }
-  }
-};
-
-function alegeaMod(mod) {
-  modCurent = mod;
-  const cfg = moduriConfig[mod];
-
-  // schimba culoarea PIC
-  document.getElementById('pG1').setAttribute('stop-color', cfg.picC1);
-  document.getElementById('pG2').setAttribute('stop-color', cfg.picC2);
-  document.getElementById('pG3').setAttribute('stop-color', cfg.picC3);
-
-  // ascunde ecranul de selectie
-  document.getElementById('varstaScreen').classList.add('hidden');
-
-  // arata stage-ul
-  const stage = document.querySelector('.stage');
-  stage.style.opacity = '1';
-  stage.style.pointerEvents = 'all';
-
-  // arata hint si text
-  document.getElementById('hint').textContent = cfg.hint;
-  document.getElementById('hint').classList.remove('hidden');
-  document.getElementById('picText').classList.remove('hidden');
-}
 
 function animatePicPoveste() {
   const pp = document.getElementById('picPoveste');
@@ -844,15 +562,14 @@ function animatePicPoveste() {
 }
 animatePicPoveste();
 
-// Prima apasare = sateliti emotii
-// A doua apasare (cand satelitii sunt vizibili) = selectie varsta
 function toggleSateliti() {
   if(satelitiVisible) {
     // A doua apasare — arata selectia de varsta
-    ascundeSateliti();
-    document.getElementById('varstaScreen').classList.remove('hidden');
-    document.getElementById('hint').classList.add('hidden');
-    document.getElementById('picText').classList.add('hidden');
+    satelitiVisible = false;
+    for(let i=0;i<6;i++) document.getElementById('sat'+i).classList.remove('visible');
+    const pp = document.getElementById('picPoveste');
+    pp.style.opacity='0'; pp.style.pointerEvents='none';
+    document.getElementById('varstaOverlay').style.display='flex';
     return;
   }
   // Prima apasare — arata satelitii
@@ -863,15 +580,25 @@ function toggleSateliti() {
   }
   const pp = document.getElementById('picPoveste');
   setTimeout(()=>{ pp.style.opacity='1'; pp.style.pointerEvents='all'; }, 350);
-  document.getElementById('hint').classList.toggle('hidden', true);
-  document.getElementById('picText').classList.toggle('hidden', true);
+  document.getElementById('hint').classList.add('hidden');
+  document.getElementById('picText').classList.add('hidden');
 }
 
-function ascundeSateliti() {
-  satelitiVisible = false;
-  for(let i=0;i<6;i++) document.getElementById('sat'+i).classList.remove('visible');
-  const pp = document.getElementById('picPoveste');
-  pp.style.opacity='0'; pp.style.pointerEvents='none';
+function alegeaMod(mod) {
+  document.getElementById('varstaOverlay').style.display='none';
+  document.getElementById('hint').classList.remove('hidden');
+  document.getElementById('picText').classList.remove('hidden');
+
+  const culori = {
+    eu:         {c1:'#FFB060',c2:'#FF8030',c3:'#E05010'},
+    mic:        {c1:'#FFD6E0',c2:'#FFB3C6',c3:'#FF8FAB'},
+    mijlociu:   {c1:'#FFF3C0',c2:'#F5C842',c3:'#D4A000'},
+    adolescent: {c1:'#C8DEFF',c2:'#7BA7CC',c3:'#4A7FA8'},
+  };
+  const c = culori[mod] || culori.eu;
+  document.getElementById('pG1').setAttribute('stop-color', c.c1);
+  document.getElementById('pG2').setAttribute('stop-color', c.c2);
+  document.getElementById('pG3').setAttribute('stop-color', c.c3);
 }
 
 function deschidePoveste() {
@@ -908,8 +635,7 @@ function deschidePoveste() {
 }
 
 function deschideEmotie(emotie) {
-  const cfg = modCurent ? moduriConfig[modCurent] : null;
-  const data = (cfg && cfg.episoade && cfg.episoade[emotie]) ? cfg.episoade[emotie] : emotiiData[emotie];
+  const data = emotiiData[emotie];
   if(!data) return;
 
   document.getElementById('pG1').setAttribute('stop-color', data.c1);
@@ -918,8 +644,6 @@ function deschideEmotie(emotie) {
 
   satelitiVisible = false;
   for(let i=0;i<6;i++) document.getElementById('sat'+i).classList.remove('visible');
-  const pp = document.getElementById('picPoveste');
-  if(pp) { pp.style.opacity='0'; pp.style.pointerEvents='none'; }
   document.getElementById('hint').classList.add('hidden');
   document.getElementById('picText').classList.add('hidden');
 
@@ -952,12 +676,95 @@ function inchideContent() {
   document.getElementById('backBtn').classList.remove('show');
   document.getElementById('picText').classList.remove('hidden');
   document.getElementById('hint').classList.remove('hidden');
-
-  const cfg = modCurent ? moduriConfig[modCurent] : {picC1:'#FFB060',picC2:'#FF8030',picC3:'#E05010'};
-  document.getElementById('pG1').setAttribute('stop-color', cfg.picC1);
-  document.getElementById('pG2').setAttribute('stop-color', cfg.picC2);
-  document.getElementById('pG3').setAttribute('stop-color', cfg.picC3);
+  document.getElementById('pG1').setAttribute('stop-color','#FFB060');
+  document.getElementById('pG2').setAttribute('stop-color','#FF8030');
+  document.getElementById('pG3').setAttribute('stop-color','#E05010');
 }
 </script>
+<!-- VARSTA OVERLAY -->
+<div id="varstaOverlay" style="
+  display:none; position:fixed; inset:0; z-index:50;
+  flex-direction:column; align-items:center; justify-content:center;
+  gap:2rem; background:rgba(6,4,15,0.7); backdrop-filter:blur(8px);
+">
+  <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;font-style:italic;color:rgba(255,255,255,0.7);">pentru cine e pauza?</div>
+  <div style="display:flex;gap:1.8rem;align-items:flex-end;justify-content:center;">
+
+    <!-- 4-7 ani roz -->
+    <button onclick="alegeaMod('mic')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.6rem;-webkit-tap-highlight-color:transparent;">
+      <svg width="110" height="102" viewBox="0 0 240 215" fill="none">
+        <defs><radialGradient id="vGmic" cx="50%" cy="65%" r="65%"><stop offset="0%" stop-color="#FFD6E0"/><stop offset="55%" stop-color="#FFB3C6"/><stop offset="100%" stop-color="#FF8FAB"/></radialGradient></defs>
+        <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#vGmic)"/>
+        <ellipse cx="44" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
+        <ellipse cx="196" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
+        <circle cx="88" cy="108" r="25" fill="#2d1060"/><ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
+        <circle cx="152" cy="108" r="25" fill="#2d1060"/><ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
+        <line x1="70" y1="86" x2="68" y2="78" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="79" y1="82" x2="78" y2="74" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="88" y1="80" x2="88" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="97" y1="81" x2="99" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="105" y1="84" x2="109" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="131" y1="84" x2="127" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="140" y1="81" x2="138" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="149" y1="80" x2="149" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="158" y1="81" x2="160" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="167" y1="84" x2="171" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span style="font-family:'Fraunces',serif;font-size:0.72rem;font-style:italic;color:rgba(255,255,255,0.5);">4 – 7 ani</span>
+    </button>
+
+    <!-- 8-13 ani galben -->
+    <button onclick="alegeaMod('mijlociu')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.6rem;-webkit-tap-highlight-color:transparent;">
+      <svg width="126" height="116" viewBox="0 0 240 215" fill="none">
+        <defs><radialGradient id="vGmij" cx="50%" cy="65%" r="65%"><stop offset="0%" stop-color="#FFF3C0"/><stop offset="55%" stop-color="#F5C842"/><stop offset="100%" stop-color="#D4A000"/></radialGradient></defs>
+        <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#vGmij)"/>
+        <ellipse cx="44" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
+        <ellipse cx="196" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
+        <circle cx="88" cy="108" r="25" fill="#2d1060"/><ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
+        <circle cx="152" cy="108" r="25" fill="#2d1060"/><ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
+        <line x1="70" y1="86" x2="68" y2="78" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="79" y1="82" x2="78" y2="74" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="88" y1="80" x2="88" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="97" y1="81" x2="99" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="105" y1="84" x2="109" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="131" y1="84" x2="127" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="140" y1="81" x2="138" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="149" y1="80" x2="149" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="158" y1="81" x2="160" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="167" y1="84" x2="171" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span style="font-family:'Fraunces',serif;font-size:0.72rem;font-style:italic;color:rgba(255,255,255,0.5);">8 – 13 ani</span>
+    </button>
+
+    <!-- adolescent albastru -->
+    <button onclick="alegeaMod('adolescent')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.6rem;-webkit-tap-highlight-color:transparent;">
+      <svg width="118" height="110" viewBox="0 0 240 215" fill="none">
+        <defs><radialGradient id="vGadol" cx="50%" cy="65%" r="65%"><stop offset="0%" stop-color="#C8DEFF"/><stop offset="55%" stop-color="#7BA7CC"/><stop offset="100%" stop-color="#4A7FA8"/></radialGradient></defs>
+        <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#vGadol)"/>
+        <ellipse cx="44" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
+        <ellipse cx="196" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
+        <circle cx="88" cy="108" r="25" fill="#2d1060"/><ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
+        <circle cx="152" cy="108" r="25" fill="#2d1060"/><ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
+        <line x1="70" y1="86" x2="68" y2="78" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="79" y1="82" x2="78" y2="74" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="88" y1="80" x2="88" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="97" y1="81" x2="99" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="105" y1="84" x2="109" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="131" y1="84" x2="127" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="140" y1="81" x2="138" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="149" y1="80" x2="149" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="158" y1="81" x2="160" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="167" y1="84" x2="171" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span style="font-family:'Fraunces',serif;font-size:0.72rem;font-style:italic;color:rgba(255,255,255,0.5);">adolescent</span>
+    </button>
+
+  </div>
+  <button onclick="alegeaMod('eu')" style="background:none;border:none;font-family:'Fraunces',serif;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.2);cursor:pointer;font-style:italic;-webkit-tap-highlight-color:transparent;">pentru mine · adult</button>
+</div>
+
 </body>
 </html>
