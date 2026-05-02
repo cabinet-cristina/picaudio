@@ -1,9 +1,9 @@
 // ===== CONFIGURARE MODURI =====
 var modConfig = {
-  eu:         { label:'Pic cel mare',    culoare:'#F0C060', secTitle:'🌙 Pic de somn — <em>Șapte seri liniștite</em>',   secSub:'Călătorii audio cu PIC, create de un psihoterapeut. Pentru adulți (18+).', heroEm:'cum te simți azi',     audioSrc:'audio/somn1.mp3' },
-  mic:        { label:'Pic cel mic',     culoare:'#FFB7C5', secTitle:'🌙 Pic de somn — <em>Șapte seri de poveste</em>',  secSub:'Povești audio cu PIC, pentru copii între 4 și 6 ani.',                     heroEm:'PIC te așteaptă',    audioSrc:'audio/somnmic1.mp3' },
-  mijlociu:   { label:'Pic cel mijlociu',culoare:'#80e8b0', secTitle:'🌙 Pic de somn — <em>Șapte aventuri de seară</em>',secSub:'Aventuri audio cu PIC, pentru copii între 7 și 12 ani.',                   heroEm:'gata de aventură?',  audioSrc:'audio/somnmijlociu1.mp3' },
-  adolescent: { label:'Pic adolescent',  culoare:'#64c8f0', secTitle:'🌙 Pic de somn — <em>Șapte seri pentru tine</em>', secSub:'Pauze audio cu PIC, pentru adolescenți între 13 și 18 ani.',               heroEm:'o pauză doar a ta',  audioSrc:'audio/somnadolescent1.mp3' }
+  eu:         { label:'Pic cel mare',    culoare:'#F0C060', secTitle:'🌙 Pic de somn — <em>Șapte seri liniștite</em>',   secSub:'Călătorii audio cu PIC, create de un psihoterapeut. Pentru adulți (18+).', heroEm:'cum te simți azi',     audioSrc:'https://audio.picaudio.app/somn1.mp3' },
+  mic:        { label:'Pic cel mic',     culoare:'#FFB7C5', secTitle:'🌙 Pic de somn — <em>Șapte seri de poveste</em>',  secSub:'Povești audio cu PIC, pentru copii între 4 și 6 ani.',                     heroEm:'PIC te așteaptă',    audioSrc:'https://audio.picaudio.app/somnmic1.mp3' },
+  mijlociu:   { label:'Pic cel mijlociu',culoare:'#80e8b0', secTitle:'🌙 Pic de somn — <em>Șapte aventuri de seară</em>',secSub:'Aventuri audio cu PIC, pentru copii între 7 și 12 ani.',                   heroEm:'gata de aventură?',  audioSrc:'https://audio.picaudio.app/somnmijlociu1.mp3' },
+  adolescent: { label:'Pic adolescent',  culoare:'#64c8f0', secTitle:'🌙 Pic de somn — <em>Șapte seri pentru tine</em>', secSub:'Pauze audio cu PIC, pentru adolescenți între 13 și 18 ani.',               heroEm:'o pauză doar a ta',  audioSrc:'https://audio.picaudio.app/somnadolescent1.mp3' }
 };
 
 // ===== EPISOADE ADULȚI =====
