@@ -485,13 +485,13 @@ const emotiiData = {
     c1:'#d4b0f5',c2:'#b39ddb',c3:'#8060b8',
     sub:'Șapte seri de odihnă. Ghidaje audio create de un psihoterapeut.',
     eps:[
-      {num:'S 01',title:'Pic de odihnă',desc:'Pentru serile în care adormi mai greu',dur:'22 min',free:true},
-      {num:'S 02',title:'Pic de eliberare',desc:'Tot ce ai dus azi | Pădure de noapte',dur:'3 min',free:false},
-      {num:'S 03',title:'Pic sub cerul liber',desc:'Când ai prea multe gânduri',dur:'3 min',free:false},
-      {num:'S 04',title:'Pic de siguranță',desc:'Când te pui în pat și simți neliniște',dur:'3 min',free:false},
-      {num:'S 05',title:'Pic de pe lună',desc:'Tehnici de respirație | La lumina lunii',dur:'3 min',free:false},
-      {num:'S 06',title:'Pic de vis',desc:'Când somnul e la un pas',dur:'3 min',free:false},
-      {num:'S 07',title:'Pic de recunoștință',desc:'Un lucru bun din ziua asta',dur:'3 min',free:false},
+      {num:'S 01',title:'Pic de odihnă',desc:'Pentru serile în care adormi mai greu | O seară la mare',dur:'22 min',free:true},
+      {num:'S 02',title:'Pic de eliberare',desc:'Călătorie audio | Pădure de noapte',dur:'3 min',free:false},
+      {num:'S 03',title:'Pic sub cerul liber',desc:'Când ai prea multe gânduri | Sub cerul înstelat',dur:'3 min',free:false},
+      {num:'S 04',title:'Pic de siguranță',desc:'Când te pui în pat și simți neliniște | Locul tău sigur',dur:'3 min',free:false},
+      {num:'S 05',title:'Pic de pe lună',desc:'Când ești prea obosit ca să închizi ochii | La lumina lunii',dur:'3 min',free:false},
+      {num:'S 06',title:'Pic de vis',desc:'Când somnul e la un pas | Un loc doar pentru tine',dur:'3 min',free:false},
+      {num:'S 07',title:'Pic de recunoștință',desc:'Un lucru bun din ziua asta | La o cafea de seară',dur:'3 min',free:false},
     ]
   },
   tristete: {
@@ -595,6 +595,7 @@ function alegeaMod(mod) {
     mijlociu:   {c1:'#FFF3C0',c2:'#F5C842',c3:'#D4A000'},
     adolescent: {c1:'#C8DEFF',c2:'#7BA7CC',c3:'#4A7FA8'},
   };
+  modCurent = mod;
   const c = culori[mod] || culori.eu;
   document.getElementById('pG1').setAttribute('stop-color', c.c1);
   document.getElementById('pG2').setAttribute('stop-color', c.c2);
@@ -634,8 +635,63 @@ function deschidePoveste() {
   document.getElementById('backBtn').classList.add('show');
 }
 
+let modCurent = 'eu';
+
+const episoadeMod = {
+  mic: {
+    somn: {
+      title:'🌙 Somn liniștit',
+      c1:'#FFD6E0',c2:'#FFB3C6',c3:'#FF8FAB',
+      sub:'Povești de noapte bună din Picopia. Pentru copii 4-7 ani.',
+      eps:[
+        {num:'S 01',title:'Cel mai rotund din Picopia',desc:'Picopia | Prima poveste de noapte bună',dur:'8 min',free:true},
+        {num:'S 02',title:'Vox face mofturi',desc:'Picopia | Când nu vrei să dormi',dur:'8 min',free:false},
+        {num:'S 03',title:'Pic stinge lumina',desc:'Picopia | Ritualul de noapte bună',dur:'8 min',free:false},
+        {num:'S 04',title:'Pic se supără',desc:'Picopia | Emoții mari în corp mic',dur:'8 min',free:false},
+        {num:'S 05',title:'Patru lăbuțe',desc:'Picopia | Prietenii care adorm',dur:'8 min',free:false},
+        {num:'S 06',title:'Pic și Bof',desc:'Picopia | Cel mai bun prieten',dur:'8 min',free:false},
+        {num:'S 07',title:'Pic la Picopia Kindergarten',desc:'Picopia | O zi întreagă de joacă',dur:'8 min',free:false},
+      ]
+    }
+  },
+  mijlociu: {
+    somn: {
+      title:'🌙 Somn liniștit',
+      c1:'#FFF3C0',c2:'#F5C842',c3:'#D4A000',
+      sub:'Aventuri de seară cu PIC. Pentru copii 8-13 ani.',
+      eps:[
+        {num:'S 01',title:'Pic de aventură',desc:'Prima zi de școală | Zola School',dur:'5 min',free:true},
+        {num:'S 02',title:'Pic de stele',desc:'Când vrei să fii cel mai bun | Stelele lui Vox',dur:'5 min',free:false},
+        {num:'S 03',title:'Pic din nor',desc:'Când gândurile devin prea multe | Norul din piept',dur:'5 min',free:false},
+        {num:'S 04',title:'Pic de cald',desc:'Dorul de cineva drag | În doi pe o lună',dur:'5 min',free:false},
+        {num:'S 05',title:'Pic de pe lună',desc:'Când ești diferit | Ce e al tău, e al tău',dur:'5 min',free:false},
+        {num:'S 06',title:'Pic de vis',desc:'Ai greșit și nu știi cum să repari | Mulțumesc că ai zis',dur:'5 min',free:false},
+        {num:'S 07',title:'Pic de dimineață',desc:'Curajul de a vorbi | Vorbește și gata',dur:'5 min',free:false},
+      ]
+    }
+  },
+  adolescent: {
+    somn: {
+      title:'🌙 Somn liniștit',
+      c1:'#C8DEFF',c2:'#7BA7CC',c3:'#4A7FA8',
+      sub:'Șapte seri pe planete îndepărtate. Pentru adolescenți 14-18 ani.',
+      eps:[
+        {num:'S 01',title:'Pic de noapte',desc:'Planeta Solen | Greutatea unei zile prea pline',dur:'8 min',free:true},
+        {num:'S 02',title:'Pic de spațiu',desc:'Planeta Koru | Singurătatea invizibilă',dur:'8 min',free:false},
+        {num:'S 03',title:'Pic de liniște',desc:'Planeta Mira | Gândurile în buclă',dur:'8 min',free:false},
+        {num:'S 04',title:'Pic de forță',desc:'Planeta Dura | Presiunea de a fi suficient',dur:'8 min',free:false},
+        {num:'S 05',title:'Pic de mâine',desc:'Planeta Exo | Frica de ce urmează',dur:'8 min',free:false},
+        {num:'S 06',title:'Pic de claritate',desc:'Planeta Neva | Momentul de claritate neașteptată',dur:'8 min',free:false},
+        {num:'S 07',title:'Pic de respiro',desc:'Planeta Velo | Primul respiro al libertății',dur:'8 min',free:false},
+      ]
+    }
+  }
+};
+
 function deschideEmotie(emotie) {
-  const data = emotiiData[emotie];
+  const data = (episoadeMod[modCurent] && episoadeMod[modCurent][emotie]) 
+    ? episoadeMod[modCurent][emotie] 
+    : emotiiData[emotie];
   if(!data) return;
 
   document.getElementById('pG1').setAttribute('stop-color', data.c1);
