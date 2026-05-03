@@ -29,6 +29,7 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
   letter-spacing:0.22em; text-transform:uppercase;
   color:rgba(255,255,255,0.22); font-weight:300; font-style:italic;
   animation:hintPulse 3s ease-in-out infinite; transition:opacity 0.5s;
+  white-space:nowrap;
 }
 @keyframes hintPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
 .hint.hidden { opacity:0; pointer-events:none; }
@@ -42,8 +43,11 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
   color:rgba(255,255,255,0.45); letter-spacing:0.08em;
 }
 
+/* PIC SCENE — responsive */
 .pic-scene {
-  position:relative; width:320px; height:320px;
+  position:relative;
+  width:min(320px, 82vw);
+  height:min(320px, 82vw);
   display:flex; align-items:center; justify-content:center;
 }
 
@@ -52,13 +56,18 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
   animation:picFloat 5s ease-in-out infinite;
   -webkit-tap-highlight-color: transparent;
 }
+/* PIC principal responsive */
+.pic-main svg {
+  width: min(210px, 55vw);
+  height: auto;
+}
 @keyframes picFloat {
   0%,100%{transform:translateY(0)} 40%{transform:translateY(-16px)} 70%{transform:translateY(-8px)}
 }
 
 .candle-glow {
   position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
-  width:220px; height:100px;
+  width:min(220px,58vw); height:100px;
   background:radial-gradient(ellipse at 50% 100%, rgba(255,180,80,0.5) 0%, rgba(255,130,40,0.2) 35%, transparent 70%);
   border-radius:50%; z-index:4; filter:blur(6px);
   animation:candleFlicker 4s ease-in-out infinite; pointer-events:none;
@@ -71,7 +80,7 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
 
 .pic-shadow {
   position:absolute; bottom:18px; left:50%; transform:translateX(-50%);
-  width:160px; height:16px;
+  width:min(160px,42vw); height:16px;
   background:radial-gradient(ellipse, rgba(50,20,5,0.4) 0%, transparent 70%);
   border-radius:50%; z-index:3;
   animation:shadowFloat 5s ease-in-out infinite; pointer-events:none;
@@ -82,38 +91,33 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
   70%{transform:translateX(-50%) scaleX(0.8);opacity:0.3}
 }
 
-/* SATELITI */
+/* SATELIȚI — poziționați prin JS, CSS doar styling */
 .satellite {
-  position:absolute; z-index:6;
-  display:flex; flex-direction:column; align-items:center; gap:0.35rem;
-  cursor:pointer; opacity:0; transform:scale(0.4);
-  transition:opacity 0.4s ease, transform 0.4s ease;
+  position:fixed; z-index:6;
+  display:flex; flex-direction:column; align-items:center; gap:0.3rem;
+  cursor:pointer;
+  opacity:0; transform:translate(-50%, -50%) scale(0.3);
+  transition:opacity 0.35s ease, transform 0.35s ease;
   pointer-events:none; -webkit-tap-highlight-color:transparent;
 }
-.satellite.visible { opacity:1; transform:scale(1); pointer-events:all; }
-.sat-pic { transition:transform 0.2s; }
-.satellite:hover .sat-pic, .satellite:active .sat-pic { transform:scale(1.12); }
+.satellite.visible {
+  opacity:1; transform:translate(-50%, -50%) scale(1);
+  pointer-events:all;
+}
+.sat-pic { transition:transform 0.2s; display:block; }
+.satellite:active .sat-pic { transform:scale(0.92); }
 .sat-label {
-  font-family:'Fraunces',serif; font-size:0.58rem; letter-spacing:0.16em;
+  font-family:'Fraunces',serif; font-size:0.58rem; letter-spacing:0.14em;
   text-transform:uppercase; color:rgba(255,255,255,0.45);
   font-weight:300; white-space:nowrap; font-style:italic;
 }
-
-.sat-0 { top:-95px; left:50%; transform:translateX(-50%) scale(0.4); }
-.sat-0.visible { transform:translateX(-50%) scale(1); }
-.sat-1 { top:-45px; right:-100px; }
-.sat-2 { bottom:-25px; right:-105px; }
-.sat-3 { bottom:-85px; left:50%; transform:translateX(-50%) scale(0.4); }
-.sat-3.visible { transform:translateX(-50%) scale(1); }
-.sat-4 { bottom:-25px; left:-105px; }
-.sat-5 { top:-45px; left:-100px; }
 
 .pic-text {
   position:fixed; bottom:5.5rem; left:50%; transform:translateX(-50%);
   text-align:center; z-index:10; transition:opacity 0.5s; white-space:nowrap;
 }
 .pic-text h1 {
-  font-family:'Fraunces',serif; font-size:clamp(1.5rem,3.5vw,2.2rem);
+  font-family:'Fraunces',serif; font-size:clamp(1.3rem,3.5vw,2.2rem);
   font-weight:300; font-style:italic; color:rgba(255,255,255,0.88);
 }
 .pic-text h1 em { font-style:normal; color:var(--orange); }
@@ -176,13 +180,92 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
   0%,92%,100%{transform:scaleY(1)} 95%{transform:scaleY(0.08)}
 }
 #eyeMain { transform-origin:120px 108px; animation:blink 7s ease-in-out infinite; }
+
+/* ===================== PLAYER FULLSCREEN ===================== */
+.fs-player {
+  display:none; position:fixed; inset:0; z-index:200;
+  flex-direction:column; align-items:center; justify-content:center;
+  gap:0;
+  background:radial-gradient(ellipse at 50% 35%, #2d1a5e 0%, #06040f 70%);
+}
+.fs-player.open { display:flex; animation:fadeUp 0.4s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+.fs-close {
+  position:absolute; top:1.3rem; right:1.5rem;
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
+  color:rgba(255,255,255,0.7); width:38px; height:38px; border-radius:50%;
+  cursor:pointer; font-size:0.9rem; display:flex; align-items:center;
+  justify-content:center; transition:all 0.2s;
+}
+.fs-close:hover { background:rgba(255,255,255,0.14); color:white; }
+
+.fs-emo-lbl {
+  position:absolute; top:1.5rem; left:1.5rem;
+  font-family:'Fraunces',serif; font-size:0.65rem; letter-spacing:0.2em;
+  text-transform:uppercase; color:rgba(255,255,255,0.3); font-style:italic;
+}
+
+.fs-pic-wrap {
+  position:relative; margin-bottom:1.8rem;
+  width:min(200px,52vw); height:min(200px,52vw);
+  display:flex; align-items:center; justify-content:center;
+}
+.fs-glow {
+  position:absolute; bottom:-10px; left:50%; transform:translateX(-50%);
+  width:130%; height:60px;
+  background:radial-gradient(ellipse, rgba(179,157,219,0.4) 0%, transparent 70%);
+  border-radius:50%; filter:blur(4px);
+  animation:glowPulse 4s ease-in-out infinite;
+}
+@keyframes glowPulse { 0%,100%{opacity:0.6;transform:translateX(-50%) scaleX(1)} 50%{opacity:1;transform:translateX(-50%) scaleX(1.2)} }
+
+#fsPic { width:100%; height:100%; animation:picFloat 4s ease-in-out infinite; }
+
+.fs-title {
+  font-family:'Fraunces',serif; font-size:clamp(1.1rem,3vw,1.6rem);
+  font-weight:300; font-style:italic; text-align:center;
+  color:rgba(255,255,255,0.9); margin-bottom:0.3rem; padding:0 1.5rem;
+}
+.fs-sub {
+  font-size:0.75rem; color:rgba(255,255,255,0.35); text-align:center;
+  margin-bottom:2rem; letter-spacing:0.08em;
+}
+
+.fs-prog-wrap { width:min(300px,78vw); margin-bottom:1.8rem; }
+.fs-time {
+  display:flex; justify-content:space-between;
+  font-size:0.65rem; color:rgba(255,255,255,0.3);
+  margin-bottom:0.5rem; font-family:'DM Sans',sans-serif;
+}
+.fs-bar {
+  height:3px; background:rgba(255,255,255,0.1);
+  border-radius:3px; overflow:hidden; cursor:pointer; position:relative;
+}
+.fs-fill {
+  height:100%; width:0%; border-radius:3px;
+  transition:width 0.5s linear;
+}
+
+.fs-controls { display:flex; align-items:center; gap:2rem; }
+.fs-skip {
+  background:none; border:none; color:rgba(255,255,255,0.4);
+  cursor:pointer; padding:0.4rem; font-family:'DM Sans',sans-serif;
+  font-size:0.72rem; letter-spacing:0.04em; transition:color 0.2s;
+}
+.fs-skip:hover { color:rgba(255,255,255,0.75); }
+.fs-play {
+  width:62px; height:62px; border-radius:50%; border:none; color:white;
+  font-size:1.2rem; cursor:pointer;
+  box-shadow:0 8px 24px rgba(100,60,180,0.45);
+  transition:all 0.25s; display:flex; align-items:center; justify-content:center;
+}
+.fs-play:hover { transform:scale(1.07); }
 </style>
 </head>
 <body>
 
 <canvas id="bgCanvas"></canvas>
-
-
 
 <button class="back-btn" id="backBtn" onclick="inchideContent()">✕</button>
 
@@ -190,10 +273,9 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
   <div class="pic-scene" id="picScene">
 
     <!-- SAT 0: Sus — Somn -->
-    <div class="satellite sat-0" id="sat0" onclick="deschideEmotie('somn')">
+    <div class="satellite" id="sat0" onclick="deschideEmotie('somn')">
       <svg class="sat-pic" width="52" height="50" viewBox="0 0 240 215" fill="none">
         <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="#b39ddb"/>
-        <!-- ochi inchisi somn -->
         <path d="M64 108Q88 122,108 108" stroke="#2d1060" stroke-width="5.5" stroke-linecap="round" fill="none"/>
         <path d="M132 108Q152 122,172 108" stroke="#2d1060" stroke-width="5.5" stroke-linecap="round" fill="none"/>
         <path d="M86 150Q120 166,154 150" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
@@ -204,7 +286,7 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
     </div>
 
     <!-- SAT 1: Dreapta sus — Tristețe -->
-    <div class="satellite sat-1" id="sat1" onclick="deschideEmotie('tristete')">
+    <div class="satellite" id="sat1" onclick="deschideEmotie('tristete')">
       <svg class="sat-pic" width="50" height="48" viewBox="0 0 240 215" fill="none">
         <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="#64c8f0"/>
         <circle cx="88" cy="108" r="25" fill="#0d2240"/>
@@ -219,7 +301,7 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
     </div>
 
     <!-- SAT 2: Dreapta jos — Fericire -->
-    <div class="satellite sat-2" id="sat2" onclick="deschideEmotie('fericire')">
+    <div class="satellite" id="sat2" onclick="deschideEmotie('fericire')">
       <svg class="sat-pic" width="56" height="54" viewBox="0 0 240 215" fill="none">
         <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="#ff8040"/>
         <path d="M60 102Q88 84,108 102" stroke="#5a2d00" stroke-width="7" stroke-linecap="round" fill="none"/>
@@ -232,10 +314,9 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
     </div>
 
     <!-- SAT 3: Jos — Frică -->
-    <div class="satellite sat-3" id="sat3" onclick="deschideEmotie('frica')">
+    <div class="satellite" id="sat3" onclick="deschideEmotie('frica')">
       <svg class="sat-pic" width="50" height="48" viewBox="0 0 240 215" fill="none">
         <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="#80e8b0"/>
-        <!-- ochi mari de frica -->
         <circle cx="88" cy="108" r="30" fill="#0d3d28"/>
         <ellipse cx="98" cy="96" rx="14" ry="13" fill="white" opacity="0.9"/>
         <circle cx="152" cy="108" r="30" fill="#0d3d28"/>
@@ -247,19 +328,16 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
       <span class="sat-label">💚 Frică</span>
     </div>
 
-    <!-- SAT 4: Stânga jos — Furie (fără sprâncene, ochi pe jumătate) -->
-    <div class="satellite sat-4" id="sat4" onclick="deschideEmotie('furie')">
+    <!-- SAT 4: Stânga jos — Furie -->
+    <div class="satellite" id="sat4" onclick="deschideEmotie('furie')">
       <svg class="sat-pic" width="50" height="48" viewBox="0 0 240 215" fill="none">
         <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="#FF3B30"/>
-        <!-- ochi pe jumatate inchisi — cerc + masca deasupra -->
         <circle cx="88" cy="112" r="24" fill="#3d0000"/>
         <ellipse cx="96" cy="103" rx="10" ry="9" fill="white" opacity="0.85"/>
-        <!-- masca care acopera jumatatea de sus a ochiului -->
         <rect x="60" y="88" width="58" height="24" fill="#FF3B30" rx="4"/>
         <circle cx="152" cy="112" r="24" fill="#3d0000"/>
         <ellipse cx="160" cy="103" rx="10" ry="9" fill="white" opacity="0.85"/>
         <rect x="122" y="88" width="58" height="24" fill="#FF3B30" rx="4"/>
-        <!-- gura suparata mica -->
         <path d="M92 154Q120 144,148 154" stroke="#3d0000" stroke-width="5" stroke-linecap="round" fill="none"/>
         <ellipse cx="44" cy="122" rx="22" ry="16" fill="rgba(200,30,20,0.28)"/>
         <ellipse cx="196" cy="122" rx="22" ry="16" fill="rgba(200,30,20,0.28)"/>
@@ -267,8 +345,8 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
       <span class="sat-label">❤️ Furie</span>
     </div>
 
-    <!-- SAT 5: Stânga sus — Exerciții scurte -->
-    <div class="satellite sat-5" id="sat5" onclick="deschideEmotie('exercitii')">
+    <!-- SAT 5: Stânga sus — 3 Minute -->
+    <div class="satellite" id="sat5" onclick="deschideEmotie('exercitii')">
       <svg class="sat-pic" width="50" height="48" viewBox="0 0 240 215" fill="none">
         <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="#FFB060"/>
         <circle cx="88" cy="108" r="25" fill="#2d1060"/>
@@ -282,44 +360,7 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
       <span class="sat-label">✨ 3 Minute</span>
     </div>
 
-    <!-- PIC poveste — plutește liber în jurul celorlalți -->
-    <div id="picPoveste" onclick="deschidePoveste()" style="
-      position:absolute; z-index:6; cursor:pointer;
-      opacity:0; pointer-events:none;
-      transition:opacity 0.6s ease;
-      display:flex; flex-direction:column; align-items:center; gap:0.35rem;
-      left:50%; top:50%; transform:translate(-50%,-50%);
-    ">
-      <svg width="46" height="44" viewBox="0 0 240 215" fill="none">
-        <defs>
-          <radialGradient id="bGp" cx="50%" cy="65%" r="65%">
-            <stop offset="0%" stop-color="#FFD090"/>
-            <stop offset="100%" stop-color="#FF9040"/>
-          </radialGradient>
-        </defs>
-        <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#bGp)"/>
-        <ellipse cx="44" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.35)"/>
-        <ellipse cx="196" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.35)"/>
-        <circle cx="88" cy="108" r="25" fill="#2d1060"/>
-        <ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-        <circle cx="152" cy="108" r="25" fill="#2d1060"/>
-        <ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-        <line x1="70" y1="86" x2="68" y2="78" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="79" y1="82" x2="78" y2="74" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="88" y1="80" x2="88" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="97" y1="81" x2="99" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="105" y1="84" x2="109" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="131" y1="84" x2="127" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="140" y1="81" x2="138" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="149" y1="80" x2="149" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="158" y1="81" x2="160" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="167" y1="84" x2="171" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
-      </svg>
-      <span style="font-family:'Fraunces',serif;font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.45);font-weight:300;white-space:nowrap;font-style:italic;">povestea lui</span>
-    </div>
-
-    <!-- PIC poveste — plutește liber în jurul celorlalți -->
+    <!-- PIC poveste plutitor -->
     <div id="picPoveste" onclick="deschidePoveste()" style="
       position:absolute; z-index:6; cursor:pointer;
       opacity:0; pointer-events:none;
@@ -377,21 +418,16 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
             <stop offset="100%" stop-color="rgba(255,80,40,0)"/>
           </radialGradient>
         </defs>
-
         <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#bG)" id="picBodyMain"/>
         <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#cG)"/>
-
         <ellipse cx="44" cy="120" rx="26" ry="20" fill="url(#ckG)"/>
         <ellipse cx="196" cy="120" rx="26" ry="20" fill="url(#ckG)"/>
-
         <g id="eyeMain">
           <circle cx="88" cy="108" r="25" fill="#2d1060"/>
           <ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
           <circle cx="152" cy="108" r="25" fill="#2d1060"/>
           <ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
         </g>
-
-        <!-- gene -->
         <line x1="70" y1="86" x2="68" y2="78" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
         <line x1="79" y1="82" x2="78" y2="74" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
         <line x1="88" y1="80" x2="88" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
@@ -402,7 +438,6 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
         <line x1="149" y1="80" x2="149" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
         <line x1="158" y1="81" x2="160" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
         <line x1="167" y1="84" x2="171" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-
         <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
       </svg>
     </div>
@@ -417,10 +452,110 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: white; 
 
 <div class="hint" id="hint">atinge-l pe PIC</div>
 
+<!-- CONTENT PANEL -->
 <div class="content-panel" id="contentPanel">
   <div class="content-title" id="contentTitle"></div>
   <div class="content-sub" id="contentSub"></div>
   <div class="ep-list" id="epList"></div>
+</div>
+
+<!-- PLAYER FULLSCREEN -->
+<div class="fs-player" id="fsPlayer">
+  <span class="fs-emo-lbl" id="fsLbl">🌙 Somn liniștit</span>
+  <button class="fs-close" onclick="inchidePlayer()">✕</button>
+
+  <div class="fs-pic-wrap">
+    <div class="fs-glow" id="fsGlow"></div>
+    <svg id="fsPic" viewBox="0 0 240 215" fill="none">
+      <defs>
+        <radialGradient id="fsGr" cx="50%" cy="65%" r="65%">
+          <stop offset="0%" stop-color="#d4b0f5" id="fsC1"/>
+          <stop offset="55%" stop-color="#b39ddb" id="fsC2"/>
+          <stop offset="100%" stop-color="#8060b8" id="fsC3"/>
+        </radialGradient>
+      </defs>
+      <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#fsGr)"/>
+      <ellipse cx="44" cy="120" rx="26" ry="20" fill="rgba(255,120,80,0.25)"/>
+      <ellipse cx="196" cy="120" rx="26" ry="20" fill="rgba(255,120,80,0.25)"/>
+      <!-- ochi inchisi somn implicit -->
+      <path d="M64 108Q88 122,108 108" stroke="#2d1060" stroke-width="5.5" stroke-linecap="round" fill="none" id="fsEyeL"/>
+      <path d="M132 108Q152 122,172 108" stroke="#2d1060" stroke-width="5.5" stroke-linecap="round" fill="none" id="fsEyeR"/>
+      <path d="M86 150Q120 166,154 150" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="fs-title" id="fsTitle">Pic de odihnă</div>
+  <div class="fs-sub" id="fsSub">Pauza de Trei Minute · PIC</div>
+
+  <div class="fs-prog-wrap">
+    <div class="fs-time">
+      <span id="fsCrt">0:00</span>
+      <span id="fsDur">--:--</span>
+    </div>
+    <div class="fs-bar" id="fsBar">
+      <div class="fs-fill" id="fsFill" style="background:linear-gradient(90deg,#d4b0f5,#8060b8)"></div>
+    </div>
+  </div>
+
+  <div class="fs-controls">
+    <button class="fs-skip" onclick="skipAudio(-15)">↺ 15s</button>
+    <button class="fs-play" id="fsPlayBtn" onclick="togglePlay()" style="background:linear-gradient(135deg,#d4b0f5,#8060b8)">▶</button>
+    <button class="fs-skip" onclick="skipAudio(15)">15s ↻</button>
+  </div>
+
+  <audio id="fsAudio" preload="none"></audio>
+</div>
+
+<!-- VARSTA OVERLAY -->
+<div id="varstaOverlay" style="
+  display:none; position:fixed; inset:0; z-index:50;
+  flex-direction:column; align-items:center; justify-content:center;
+  gap:2rem; background:rgba(6,4,15,0.7); backdrop-filter:blur(8px);
+">
+  <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;font-style:italic;color:rgba(255,255,255,0.7);">pentru cine e pauza?</div>
+  <div style="display:flex;gap:1.8rem;align-items:flex-end;justify-content:center;flex-wrap:wrap;padding:0 1rem;">
+
+    <button onclick="alegeaMod('mic')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.6rem;-webkit-tap-highlight-color:transparent;">
+      <svg width="100" height="92" viewBox="0 0 240 215" fill="none">
+        <defs><radialGradient id="vGmic" cx="50%" cy="65%" r="65%"><stop offset="0%" stop-color="#FFD6E0"/><stop offset="55%" stop-color="#FFB3C6"/><stop offset="100%" stop-color="#FF8FAB"/></radialGradient></defs>
+        <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#vGmic)"/>
+        <ellipse cx="44" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
+        <ellipse cx="196" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
+        <circle cx="88" cy="108" r="25" fill="#2d1060"/><ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
+        <circle cx="152" cy="108" r="25" fill="#2d1060"/><ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
+        <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span style="font-family:'Fraunces',serif;font-size:0.72rem;font-style:italic;color:rgba(255,255,255,0.5);">4 – 7 ani</span>
+    </button>
+
+    <button onclick="alegeaMod('mijlociu')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.6rem;-webkit-tap-highlight-color:transparent;">
+      <svg width="116" height="106" viewBox="0 0 240 215" fill="none">
+        <defs><radialGradient id="vGmij" cx="50%" cy="65%" r="65%"><stop offset="0%" stop-color="#FFF3C0"/><stop offset="55%" stop-color="#F5C842"/><stop offset="100%" stop-color="#D4A000"/></radialGradient></defs>
+        <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#vGmij)"/>
+        <ellipse cx="44" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
+        <ellipse cx="196" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
+        <circle cx="88" cy="108" r="25" fill="#2d1060"/><ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
+        <circle cx="152" cy="108" r="25" fill="#2d1060"/><ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
+        <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span style="font-family:'Fraunces',serif;font-size:0.72rem;font-style:italic;color:rgba(255,255,255,0.5);">8 – 13 ani</span>
+    </button>
+
+    <button onclick="alegeaMod('adolescent')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.6rem;-webkit-tap-highlight-color:transparent;">
+      <svg width="108" height="100" viewBox="0 0 240 215" fill="none">
+        <defs><radialGradient id="vGadol" cx="50%" cy="65%" r="65%"><stop offset="0%" stop-color="#C8DEFF"/><stop offset="55%" stop-color="#7BA7CC"/><stop offset="100%" stop-color="#4A7FA8"/></radialGradient></defs>
+        <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#vGadol)"/>
+        <ellipse cx="44" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
+        <ellipse cx="196" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
+        <circle cx="88" cy="108" r="25" fill="#2d1060"/><ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
+        <circle cx="152" cy="108" r="25" fill="#2d1060"/><ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
+        <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span style="font-family:'Fraunces',serif;font-size:0.72rem;font-style:italic;color:rgba(255,255,255,0.5);">adolescent</span>
+    </button>
+
+  </div>
+  <button onclick="alegeaMod('eu')" style="background:none;border:none;font-family:'Fraunces',serif;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.2);cursor:pointer;font-style:italic;-webkit-tap-highlight-color:transparent;">pentru mine · adult</button>
 </div>
 
 <script>
@@ -478,77 +613,138 @@ function drawBG(){
 }
 drawBG();
 
-// DATE
+// DATE EMOTII
 const emotiiData = {
   somn: {
     title:'🌙 Somn liniștit',
     c1:'#d4b0f5',c2:'#b39ddb',c3:'#8060b8',
+    audioSrc:'https://audio.picaudio.app/adult/somn-s01.m4a',
     sub:'Șapte seri de odihnă. Ghidaje audio create de un psihoterapeut.',
     eps:[
-      {num:'S 01',title:'Pic de odihnă',desc:'Pentru serile în care adormi mai greu | O seară la mare',dur:'22 min',free:true},
-      {num:'S 02',title:'Pic de eliberare',desc:'Călătorie audio | Pădure de noapte',dur:'3 min',free:false},
-      {num:'S 03',title:'Pic sub cerul liber',desc:'Când ai prea multe gânduri | Sub cerul înstelat',dur:'3 min',free:false},
-      {num:'S 04',title:'Pic de siguranță',desc:'Când te pui în pat și simți neliniște | Locul tău sigur',dur:'3 min',free:false},
-      {num:'S 05',title:'Pic de pe lună',desc:'Când ești prea obosit ca să închizi ochii | La lumina lunii',dur:'3 min',free:false},
-      {num:'S 06',title:'Pic de vis',desc:'Când somnul e la un pas | Un loc doar pentru tine',dur:'3 min',free:false},
-      {num:'S 07',title:'Pic de recunoștință',desc:'Un lucru bun din ziua asta | La o cafea de seară',dur:'3 min',free:false},
+      {num:'S 01',title:'Pic de odihnă',desc:'Pentru serile în care adormi mai greu | O seară la mare',dur:'22 min',free:true, src:'https://audio.picaudio.app/adult/somn-s01.m4a'},
+      {num:'S 02',title:'Pic de eliberare',desc:'Călătorie audio | Pădure de noapte',dur:'3 min',free:false,src:''},
+      {num:'S 03',title:'Pic sub cerul liber',desc:'Când ai prea multe gânduri | Sub cerul înstelat',dur:'3 min',free:false,src:''},
+      {num:'S 04',title:'Pic de siguranță',desc:'Când te pui în pat și simți neliniște | Locul tău sigur',dur:'3 min',free:false,src:''},
+      {num:'S 05',title:'Pic de pe lună',desc:'Când ești prea obosit ca să închizi ochii | La lumina lunii',dur:'3 min',free:false,src:''},
+      {num:'S 06',title:'Pic de vis',desc:'Când somnul e la un pas | Un loc doar pentru tine',dur:'3 min',free:false,src:''},
+      {num:'S 07',title:'Pic de recunoștință',desc:'Un lucru bun din ziua asta | La o cafea de seară',dur:'3 min',free:false,src:''},
     ]
   },
   tristete: {
     title:'💙 Tristețe blândă',
     c1:'#92d8f8',c2:'#64c8f0',c3:'#3090c0',
+    audioSrc:'',
     sub:'Când inima e grea. PIC stă lângă tine, fără grabă.',
     eps:[
-      {num:'T 01',title:'Pic de lacrimi',desc:'Lasă-le să vină | E ok să nu fii ok',dur:'5 min',free:true},
-      {num:'T 02',title:'Pic de greutate',desc:'Când totul apasă',dur:'3 min',free:false},
-      {num:'T 03',title:'Pic de singurătate',desc:'Nu ești singur în întuneric',dur:'3 min',free:false},
+      {num:'T 01',title:'Pic de lacrimi',desc:'Lasă-le să vină | E ok să nu fii ok',dur:'5 min',free:true,src:''},
+      {num:'T 02',title:'Pic de greutate',desc:'Când totul apasă',dur:'3 min',free:false,src:''},
+      {num:'T 03',title:'Pic de singurătate',desc:'Nu ești singur în întuneric',dur:'3 min',free:false,src:''},
     ]
   },
   fericire: {
     title:'🧡 Fericire autentică',
     c1:'#FFB07A',c2:'#FF8030',c3:'#E05010',
+    audioSrc:'',
     sub:'Rămâi în lumină. Ancorează bucuria.',
     eps:[
-      {num:'F 01',title:'Pic de bucurie',desc:'Rămâi în acest moment frumos',dur:'3 min',free:true},
-      {num:'F 02',title:'Pic de recunoștință',desc:'Ce e bine azi',dur:'3 min',free:false},
-      {num:'F 03',title:'Pic de lumină',desc:'Ancorarea în prezent',dur:'3 min',free:false},
+      {num:'F 01',title:'Pic de bucurie',desc:'Rămâi în acest moment frumos',dur:'3 min',free:true,src:''},
+      {num:'F 02',title:'Pic de recunoștință',desc:'Ce e bine azi',dur:'3 min',free:false,src:''},
+      {num:'F 03',title:'Pic de lumină',desc:'Ancorarea în prezent',dur:'3 min',free:false,src:''},
     ]
   },
   frica: {
     title:'💚 Frică, respiră',
     c1:'#a8f0c8',c2:'#80e8b0',c3:'#48b878',
+    audioSrc:'',
     sub:'Frica respirată devine vânt. PIC respiră cu tine.',
     eps:[
-      {num:'FR 01',title:'Pic de respirație',desc:'Tehnici care calmează sistemul nervos',dur:'5 min',free:true},
-      {num:'FR 02',title:'Pic de prezent',desc:'Când mintea fuge în viitor',dur:'3 min',free:false},
-      {num:'FR 03',title:'Pic de siguranță',desc:'Ești în siguranță acum',dur:'3 min',free:false},
+      {num:'FR 01',title:'Pic de respirație',desc:'Tehnici care calmează sistemul nervos',dur:'5 min',free:true,src:''},
+      {num:'FR 02',title:'Pic de prezent',desc:'Când mintea fuge în viitor',dur:'3 min',free:false,src:''},
+      {num:'FR 03',title:'Pic de siguranță',desc:'Ești în siguranță acum',dur:'3 min',free:false,src:''},
     ]
   },
   furie: {
     title:'❤️ Furie, hai s-o transformăm',
     c1:'#ff9080',c2:'#FF3B30',c3:'#c01818',
+    audioSrc:'',
     sub:'Furia are un mesaj. PIC te ajută să îl asculți.',
     eps:[
-      {num:'FU 01',title:'Pic de descărcare',desc:'Eliberarea tensiunii din corp',dur:'5 min',free:true},
-      {num:'FU 02',title:'Pic de înțelegere',desc:'Ce se ascunde în spatele furiei',dur:'3 min',free:false},
-      {num:'FU 03',title:'Pic de pace',desc:'Transformarea energiei',dur:'3 min',free:false},
+      {num:'FU 01',title:'Pic de descărcare',desc:'Eliberarea tensiunii din corp',dur:'5 min',free:true,src:''},
+      {num:'FU 02',title:'Pic de înțelegere',desc:'Ce se ascunde în spatele furiei',dur:'3 min',free:false,src:''},
+      {num:'FU 03',title:'Pic de pace',desc:'Transformarea energiei',dur:'3 min',free:false,src:''},
     ]
   },
   exercitii: {
     title:'✨ Trei Minute pentru tine',
     c1:'#FFD090',c2:'#FFB060',c3:'#FF8030',
+    audioSrc:'',
     sub:'Respirații, pauze, mini-experiențe. Oricând, oriunde.',
     eps:[
-      {num:'E 01',title:'Respirație 4-7-8',desc:'Tehnica de calmare rapidă a sistemului nervos',dur:'3 min',free:true},
-      {num:'E 02',title:'Scanarea corpului',desc:'O plimbare blândă prin propriul corp',dur:'3 min',free:false},
-      {num:'E 03',title:'Ancorare în prezent',desc:'5-4-3-2-1 | Înapoi în corp',dur:'3 min',free:false},
-      {num:'E 04',title:'Respirație pătrat',desc:'Echilibru și calm instant',dur:'3 min',free:false},
+      {num:'E 01',title:'Respirație 4-7-8',desc:'Tehnica de calmare rapidă a sistemului nervos',dur:'3 min',free:true,src:''},
+      {num:'E 02',title:'Scanarea corpului',desc:'O plimbare blândă prin propriul corp',dur:'3 min',free:false,src:''},
+      {num:'E 03',title:'Ancorare în prezent',desc:'5-4-3-2-1 | Înapoi în corp',dur:'3 min',free:false,src:''},
+      {num:'E 04',title:'Respirație pătrat',desc:'Echilibru și calm instant',dur:'3 min',free:false,src:''},
     ]
+  }
+};
+
+const episoadeMod = {
+  mic: {
+    somn: {
+      title:'🌙 Somn liniștit',
+      c1:'#FFD6E0',c2:'#FFB3C6',c3:'#FF8FAB',
+      audioSrc:'https://audio.picaudio.app/mic/somn-s01.m4a',
+      sub:'Povești de noapte bună din Picopia. Pentru copii 4-7 ani.',
+      eps:[
+        {num:'S 01',title:'Cel mai rotund din Picopia',desc:'Picopia | Prima poveste de noapte bună',dur:'8 min',free:true,src:'https://audio.picaudio.app/mic/somn-s01.m4a'},
+        {num:'S 02',title:'Vox face mofturi',desc:'Picopia | Când nu vrei să dormi',dur:'8 min',free:false,src:''},
+        {num:'S 03',title:'Pic stinge lumina',desc:'Picopia | Ritualul de noapte bună',dur:'8 min',free:false,src:''},
+        {num:'S 04',title:'Pic se supără',desc:'Picopia | Emoții mari în corp mic',dur:'8 min',free:false,src:''},
+        {num:'S 05',title:'Patru lăbuțe',desc:'Picopia | Prietenii care adorm',dur:'8 min',free:false,src:''},
+        {num:'S 06',title:'Pic și Bof',desc:'Picopia | Cel mai bun prieten',dur:'8 min',free:false,src:''},
+        {num:'S 07',title:'Pic la Picopia Kindergarten',desc:'Picopia | O zi întreagă de joacă',dur:'8 min',free:false,src:''},
+      ]
+    }
+  },
+  mijlociu: {
+    somn: {
+      title:'🌙 Somn liniștit',
+      c1:'#FFF3C0',c2:'#F5C842',c3:'#D4A000',
+      audioSrc:'https://audio.picaudio.app/mijlociu/somn-s01.m4a',
+      sub:'Aventuri de seară cu PIC. Pentru copii 8-13 ani.',
+      eps:[
+        {num:'S 01',title:'Pic de aventură',desc:'Prima zi de școală | Zola School',dur:'5 min',free:true,src:'https://audio.picaudio.app/mijlociu/somn-s01.m4a'},
+        {num:'S 02',title:'Pic de stele',desc:'Când vrei să fii cel mai bun | Stelele lui Vox',dur:'5 min',free:false,src:''},
+        {num:'S 03',title:'Pic din nor',desc:'Când gândurile devin prea multe | Norul din piept',dur:'5 min',free:false,src:''},
+        {num:'S 04',title:'Pic de cald',desc:'Dorul de cineva drag | În doi pe o lună',dur:'5 min',free:false,src:''},
+        {num:'S 05',title:'Pic de pe lună',desc:'Când ești diferit | Ce e al tău, e al tău',dur:'5 min',free:false,src:''},
+        {num:'S 06',title:'Pic de vis',desc:'Ai greșit și nu știi cum să repari | Mulțumesc că ai zis',dur:'5 min',free:false,src:''},
+        {num:'S 07',title:'Pic de dimineață',desc:'Curajul de a vorbi | Vorbește și gata',dur:'5 min',free:false,src:''},
+      ]
+    }
+  },
+  adolescent: {
+    somn: {
+      title:'🌙 Somn liniștit',
+      c1:'#C8DEFF',c2:'#7BA7CC',c3:'#4A7FA8',
+      audioSrc:'https://audio.picaudio.app/adolescent/somn-s01.m4a',
+      sub:'Șapte seri pe planete îndepărtate. Pentru adolescenți 14-18 ani.',
+      eps:[
+        {num:'S 01',title:'Pic de noapte',desc:'Planeta Solen | Greutatea unei zile prea pline',dur:'8 min',free:true,src:'https://audio.picaudio.app/adolescent/somn-s01.m4a'},
+        {num:'S 02',title:'Pic de spațiu',desc:'Planeta Koru | Singurătatea invizibilă',dur:'8 min',free:false,src:''},
+        {num:'S 03',title:'Pic de liniște',desc:'Planeta Mira | Gândurile în buclă',dur:'8 min',free:false,src:''},
+        {num:'S 04',title:'Pic de forță',desc:'Planeta Dura | Presiunea de a fi suficient',dur:'8 min',free:false,src:''},
+        {num:'S 05',title:'Pic de mâine',desc:'Planeta Exo | Frica de ce urmează',dur:'8 min',free:false,src:''},
+        {num:'S 06',title:'Pic de claritate',desc:'Planeta Neva | Momentul de claritate neașteptată',dur:'8 min',free:false,src:''},
+        {num:'S 07',title:'Pic de respiro',desc:'Planeta Velo | Primul respiro al libertății',dur:'8 min',free:false,src:''},
+      ]
+    }
   }
 };
 
 let satelitiVisible = false;
 let ppAngle = 0;
+let modCurent = 'eu';
 
 function animatePicPoveste() {
   const pp = document.getElementById('picPoveste');
@@ -562,9 +758,31 @@ function animatePicPoveste() {
 }
 animatePicPoveste();
 
+// Poziționare sateliți în funcție de dimensiunea ecranului
+function pozitionareSateliti() {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  // Raza: cât de departe de PIC, limitată să nu iasă din ecran
+  const minDim = Math.min(window.innerWidth, window.innerHeight);
+  const raza = Math.min(minDim * 0.38, 155);
+  // Unghiurile pentru 6 sateliți (pornind de sus, sensul acelor)
+  // 0=sus, 1=dreapta-sus, 2=dreapta-jos, 3=jos, 4=stânga-jos, 5=stânga-sus
+  const unghiuri = [-90, -30, 30, 90, 150, -150];
+  for(let i = 0; i < 6; i++) {
+    const sat = document.getElementById('sat'+i);
+    if(!sat) continue;
+    const rad = unghiuri[i] * Math.PI / 180;
+    const x = cx + Math.cos(rad) * raza;
+    const y = cy + Math.sin(rad) * raza;
+    sat.style.left = x + 'px';
+    sat.style.top  = y + 'px';
+  }
+}
+pozitionareSateliti();
+window.addEventListener('resize', pozitionareSateliti);
+
 function toggleSateliti() {
   if(satelitiVisible) {
-    // A doua apasare — arata selectia de varsta
     satelitiVisible = false;
     for(let i=0;i<6;i++) document.getElementById('sat'+i).classList.remove('visible');
     const pp = document.getElementById('picPoveste');
@@ -572,7 +790,6 @@ function toggleSateliti() {
     document.getElementById('varstaOverlay').style.display='flex';
     return;
   }
-  // Prima apasare — arata satelitii
   satelitiVisible = true;
   for(let i=0;i<6;i++){
     const sat = document.getElementById('sat'+i);
@@ -588,7 +805,6 @@ function alegeaMod(mod) {
   document.getElementById('varstaOverlay').style.display='none';
   document.getElementById('hint').classList.remove('hidden');
   document.getElementById('picText').classList.remove('hidden');
-
   const culori = {
     eu:         {c1:'#FFB060',c2:'#FF8030',c3:'#E05010'},
     mic:        {c1:'#FFD6E0',c2:'#FFB3C6',c3:'#FF8FAB'},
@@ -609,14 +825,11 @@ function deschidePoveste() {
   pp.style.opacity='0'; pp.style.pointerEvents='none';
   document.getElementById('hint').classList.add('hidden');
   document.getElementById('picText').classList.add('hidden');
-
   document.getElementById('pG1').setAttribute('stop-color','#FFD090');
   document.getElementById('pG2').setAttribute('stop-color','#FFB060');
   document.getElementById('pG3').setAttribute('stop-color','#FF8030');
-
   document.getElementById('contentTitle').innerHTML = '🌙 Povestea lui PIC';
   document.getElementById('contentSub').textContent = 'De pe lună, cu curiozitate.';
-
   const epList = document.getElementById('epList');
   epList.innerHTML = `
     <div style="max-width:520px;font-family:'Fraunces',serif;font-size:1rem;line-height:2.1;color:rgba(255,255,255,0.72);font-weight:300;">
@@ -630,67 +843,13 @@ function deschidePoveste() {
       <p style="color:rgba(255,180,80,0.85);font-style:italic;font-size:1.05rem;">PIC e aici. Rotund și fără vârf. Dar cu inima deschisă.</p>
     </div>
   `;
-
   document.getElementById('contentPanel').classList.add('open');
   document.getElementById('backBtn').classList.add('show');
 }
 
-let modCurent = 'eu';
-
-const episoadeMod = {
-  mic: {
-    somn: {
-      title:'🌙 Somn liniștit',
-      c1:'#FFD6E0',c2:'#FFB3C6',c3:'#FF8FAB',
-      sub:'Povești de noapte bună din Picopia. Pentru copii 4-7 ani.',
-      eps:[
-        {num:'S 01',title:'Cel mai rotund din Picopia',desc:'Picopia | Prima poveste de noapte bună',dur:'8 min',free:true},
-        {num:'S 02',title:'Vox face mofturi',desc:'Picopia | Când nu vrei să dormi',dur:'8 min',free:false},
-        {num:'S 03',title:'Pic stinge lumina',desc:'Picopia | Ritualul de noapte bună',dur:'8 min',free:false},
-        {num:'S 04',title:'Pic se supără',desc:'Picopia | Emoții mari în corp mic',dur:'8 min',free:false},
-        {num:'S 05',title:'Patru lăbuțe',desc:'Picopia | Prietenii care adorm',dur:'8 min',free:false},
-        {num:'S 06',title:'Pic și Bof',desc:'Picopia | Cel mai bun prieten',dur:'8 min',free:false},
-        {num:'S 07',title:'Pic la Picopia Kindergarten',desc:'Picopia | O zi întreagă de joacă',dur:'8 min',free:false},
-      ]
-    }
-  },
-  mijlociu: {
-    somn: {
-      title:'🌙 Somn liniștit',
-      c1:'#FFF3C0',c2:'#F5C842',c3:'#D4A000',
-      sub:'Aventuri de seară cu PIC. Pentru copii 8-13 ani.',
-      eps:[
-        {num:'S 01',title:'Pic de aventură',desc:'Prima zi de școală | Zola School',dur:'5 min',free:true},
-        {num:'S 02',title:'Pic de stele',desc:'Când vrei să fii cel mai bun | Stelele lui Vox',dur:'5 min',free:false},
-        {num:'S 03',title:'Pic din nor',desc:'Când gândurile devin prea multe | Norul din piept',dur:'5 min',free:false},
-        {num:'S 04',title:'Pic de cald',desc:'Dorul de cineva drag | În doi pe o lună',dur:'5 min',free:false},
-        {num:'S 05',title:'Pic de pe lună',desc:'Când ești diferit | Ce e al tău, e al tău',dur:'5 min',free:false},
-        {num:'S 06',title:'Pic de vis',desc:'Ai greșit și nu știi cum să repari | Mulțumesc că ai zis',dur:'5 min',free:false},
-        {num:'S 07',title:'Pic de dimineață',desc:'Curajul de a vorbi | Vorbește și gata',dur:'5 min',free:false},
-      ]
-    }
-  },
-  adolescent: {
-    somn: {
-      title:'🌙 Somn liniștit',
-      c1:'#C8DEFF',c2:'#7BA7CC',c3:'#4A7FA8',
-      sub:'Șapte seri pe planete îndepărtate. Pentru adolescenți 14-18 ani.',
-      eps:[
-        {num:'S 01',title:'Pic de noapte',desc:'Planeta Solen | Greutatea unei zile prea pline',dur:'8 min',free:true},
-        {num:'S 02',title:'Pic de spațiu',desc:'Planeta Koru | Singurătatea invizibilă',dur:'8 min',free:false},
-        {num:'S 03',title:'Pic de liniște',desc:'Planeta Mira | Gândurile în buclă',dur:'8 min',free:false},
-        {num:'S 04',title:'Pic de forță',desc:'Planeta Dura | Presiunea de a fi suficient',dur:'8 min',free:false},
-        {num:'S 05',title:'Pic de mâine',desc:'Planeta Exo | Frica de ce urmează',dur:'8 min',free:false},
-        {num:'S 06',title:'Pic de claritate',desc:'Planeta Neva | Momentul de claritate neașteptată',dur:'8 min',free:false},
-        {num:'S 07',title:'Pic de respiro',desc:'Planeta Velo | Primul respiro al libertății',dur:'8 min',free:false},
-      ]
-    }
-  }
-};
-
 function deschideEmotie(emotie) {
-  const data = (episoadeMod[modCurent] && episoadeMod[modCurent][emotie]) 
-    ? episoadeMod[modCurent][emotie] 
+  const data = (episoadeMod[modCurent] && episoadeMod[modCurent][emotie])
+    ? episoadeMod[modCurent][emotie]
     : emotiiData[emotie];
   if(!data) return;
 
@@ -711,6 +870,7 @@ function deschideEmotie(emotie) {
   data.eps.forEach(ep => {
     const row = document.createElement('div');
     row.className = 'ep-row';
+    const canPlay = ep.free && ep.src;
     row.innerHTML = `
       <span class="ep-num">${ep.num}</span>
       <div class="ep-info">
@@ -718,7 +878,10 @@ function deschideEmotie(emotie) {
         <div class="ep-desc">${ep.desc}</div>
       </div>
       <span class="ep-dur">${ep.dur}</span>
-      <button class="ep-play" style="background:linear-gradient(135deg,${data.c1},${data.c3})">▶</button>
+      <button class="ep-play"
+        style="background:${canPlay ? `linear-gradient(135deg,${data.c1},${data.c3})` : 'rgba(255,255,255,0.1)'};
+               opacity:${canPlay ? 1 : 0.35}; cursor:${canPlay ? 'pointer' : 'default'}"
+        ${canPlay ? `onclick="deschidePlayer('${ep.title.replace(/'/g,"\\'")}','${ep.src}','${data.c1}','${data.c3}','${data.title}')"` : ''}>▶</button>
     `;
     epList.appendChild(row);
   });
@@ -736,91 +899,96 @@ function inchideContent() {
   document.getElementById('pG2').setAttribute('stop-color','#FF8030');
   document.getElementById('pG3').setAttribute('stop-color','#E05010');
 }
+
+// ============ PLAYER ============
+function deschidePlayer(title, src, c1, c3, emoLbl) {
+  const pl = document.getElementById('fsPlayer');
+  document.getElementById('fsTitle').textContent = title;
+  document.getElementById('fsLbl').textContent = emoLbl || '';
+  // Culori player
+  document.getElementById('fsC1').setAttribute('stop-color', c1);
+  document.getElementById('fsC2').setAttribute('stop-color', c1);
+  document.getElementById('fsC3').setAttribute('stop-color', c3);
+  document.getElementById('fsFill').style.background = `linear-gradient(90deg,${c1},${c3})`;
+  document.getElementById('fsPlayBtn').style.background = `linear-gradient(135deg,${c1},${c3})`;
+  document.getElementById('fsGlow').style.background = `radial-gradient(ellipse, ${c1}55 0%, transparent 70%)`;
+  // Background player
+  pl.style.background = `radial-gradient(ellipse at 50% 35%, rgba(${hexToRgb(c3)},0.35) 0%, #06040f 70%)`;
+  // Audio
+  const audio = document.getElementById('fsAudio');
+  audio.src = src;
+  audio.load();
+  // Reset UI
+  document.getElementById('fsFill').style.width = '0%';
+  document.getElementById('fsCrt').textContent = '0:00';
+  document.getElementById('fsDur').textContent = '--:--';
+  document.getElementById('fsPlayBtn').textContent = '▶';
+  // Deschide
+  pl.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  history.pushState({player: true}, '');
+}
+
+function inchidePlayer() {
+  document.getElementById('fsPlayer').classList.remove('open');
+  const audio = document.getElementById('fsAudio');
+  audio.pause();
+  document.getElementById('fsPlayBtn').textContent = '▶';
+  document.body.style.overflow = '';
+}
+
+function togglePlay() {
+  const audio = document.getElementById('fsAudio');
+  const btn = document.getElementById('fsPlayBtn');
+  if(audio.paused) {
+    audio.play().then(()=>{ btn.textContent = '⏸'; }).catch(()=>{ btn.textContent = '▶'; });
+  } else {
+    audio.pause();
+    btn.textContent = '▶';
+  }
+}
+
+function skipAudio(s) {
+  const a = document.getElementById('fsAudio');
+  a.currentTime = Math.max(0, Math.min(a.duration || 0, a.currentTime + s));
+}
+
+document.getElementById('fsBar').addEventListener('click', function(e) {
+  const a = document.getElementById('fsAudio');
+  if(!a.duration) return;
+  const r = this.getBoundingClientRect();
+  a.currentTime = ((e.clientX - r.left) / r.width) * a.duration;
+});
+
+function fmt(s) {
+  const m = Math.floor(s / 60);
+  return m + ':' + (Math.floor(s % 60) < 10 ? '0' : '') + Math.floor(s % 60);
+}
+
+document.getElementById('fsAudio').addEventListener('timeupdate', function() {
+  if(this.duration) {
+    document.getElementById('fsFill').style.width = (this.currentTime / this.duration * 100) + '%';
+    document.getElementById('fsCrt').textContent = fmt(this.currentTime);
+  }
+});
+document.getElementById('fsAudio').addEventListener('loadedmetadata', function() {
+  document.getElementById('fsDur').textContent = fmt(this.duration);
+});
+document.getElementById('fsAudio').addEventListener('ended', function() {
+  document.getElementById('fsPlayBtn').textContent = '▶';
+});
+
+window.addEventListener('popstate', function() {
+  const pl = document.getElementById('fsPlayer');
+  if(pl.classList.contains('open')) inchidePlayer();
+});
+
+function hexToRgb(hex) {
+  hex = hex.replace('#','');
+  if(hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const n = parseInt(hex, 16);
+  return `${(n>>16)&255},${(n>>8)&255},${n&255}`;
+}
 </script>
-<!-- VARSTA OVERLAY -->
-<div id="varstaOverlay" style="
-  display:none; position:fixed; inset:0; z-index:50;
-  flex-direction:column; align-items:center; justify-content:center;
-  gap:2rem; background:rgba(6,4,15,0.7); backdrop-filter:blur(8px);
-">
-  <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;font-style:italic;color:rgba(255,255,255,0.7);">pentru cine e pauza?</div>
-  <div style="display:flex;gap:1.8rem;align-items:flex-end;justify-content:center;">
-
-    <!-- 4-7 ani roz -->
-    <button onclick="alegeaMod('mic')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.6rem;-webkit-tap-highlight-color:transparent;">
-      <svg width="110" height="102" viewBox="0 0 240 215" fill="none">
-        <defs><radialGradient id="vGmic" cx="50%" cy="65%" r="65%"><stop offset="0%" stop-color="#FFD6E0"/><stop offset="55%" stop-color="#FFB3C6"/><stop offset="100%" stop-color="#FF8FAB"/></radialGradient></defs>
-        <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#vGmic)"/>
-        <ellipse cx="44" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
-        <ellipse cx="196" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
-        <circle cx="88" cy="108" r="25" fill="#2d1060"/><ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-        <circle cx="152" cy="108" r="25" fill="#2d1060"/><ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-        <line x1="70" y1="86" x2="68" y2="78" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="79" y1="82" x2="78" y2="74" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="88" y1="80" x2="88" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="97" y1="81" x2="99" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="105" y1="84" x2="109" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="131" y1="84" x2="127" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="140" y1="81" x2="138" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="149" y1="80" x2="149" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="158" y1="81" x2="160" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="167" y1="84" x2="171" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
-      </svg>
-      <span style="font-family:'Fraunces',serif;font-size:0.72rem;font-style:italic;color:rgba(255,255,255,0.5);">4 – 7 ani</span>
-    </button>
-
-    <!-- 8-13 ani galben -->
-    <button onclick="alegeaMod('mijlociu')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.6rem;-webkit-tap-highlight-color:transparent;">
-      <svg width="126" height="116" viewBox="0 0 240 215" fill="none">
-        <defs><radialGradient id="vGmij" cx="50%" cy="65%" r="65%"><stop offset="0%" stop-color="#FFF3C0"/><stop offset="55%" stop-color="#F5C842"/><stop offset="100%" stop-color="#D4A000"/></radialGradient></defs>
-        <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#vGmij)"/>
-        <ellipse cx="44" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
-        <ellipse cx="196" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
-        <circle cx="88" cy="108" r="25" fill="#2d1060"/><ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-        <circle cx="152" cy="108" r="25" fill="#2d1060"/><ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-        <line x1="70" y1="86" x2="68" y2="78" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="79" y1="82" x2="78" y2="74" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="88" y1="80" x2="88" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="97" y1="81" x2="99" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="105" y1="84" x2="109" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="131" y1="84" x2="127" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="140" y1="81" x2="138" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="149" y1="80" x2="149" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="158" y1="81" x2="160" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="167" y1="84" x2="171" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
-      </svg>
-      <span style="font-family:'Fraunces',serif;font-size:0.72rem;font-style:italic;color:rgba(255,255,255,0.5);">8 – 13 ani</span>
-    </button>
-
-    <!-- adolescent albastru -->
-    <button onclick="alegeaMod('adolescent')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.6rem;-webkit-tap-highlight-color:transparent;">
-      <svg width="118" height="110" viewBox="0 0 240 215" fill="none">
-        <defs><radialGradient id="vGadol" cx="50%" cy="65%" r="65%"><stop offset="0%" stop-color="#C8DEFF"/><stop offset="55%" stop-color="#7BA7CC"/><stop offset="100%" stop-color="#4A7FA8"/></radialGradient></defs>
-        <path d="M120 14C138 14,190 38,205 80C218 116,210 152,185 172C168 184,146 190,120 190C94 190,72 184,55 172C30 152,22 116,35 80C50 38,102 14,120 14Z" fill="url(#vGadol)"/>
-        <ellipse cx="44" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
-        <ellipse cx="196" cy="120" rx="26" ry="20" fill="rgba(255,80,40,0.32)"/>
-        <circle cx="88" cy="108" r="25" fill="#2d1060"/><ellipse cx="96" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-        <circle cx="152" cy="108" r="25" fill="#2d1060"/><ellipse cx="160" cy="99" rx="11" ry="10" fill="white" opacity="0.88"/>
-        <line x1="70" y1="86" x2="68" y2="78" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="79" y1="82" x2="78" y2="74" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="88" y1="80" x2="88" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="97" y1="81" x2="99" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="105" y1="84" x2="109" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="131" y1="84" x2="127" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="140" y1="81" x2="138" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="149" y1="80" x2="149" y2="72" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="158" y1="81" x2="160" y2="73" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="167" y1="84" x2="171" y2="77" stroke="#2d1060" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M86 148 Q120 170 154 148" stroke="#2d1060" stroke-width="5" stroke-linecap="round" fill="none"/>
-      </svg>
-      <span style="font-family:'Fraunces',serif;font-size:0.72rem;font-style:italic;color:rgba(255,255,255,0.5);">adolescent</span>
-    </button>
-
-  </div>
-  <button onclick="alegeaMod('eu')" style="background:none;border:none;font-family:'Fraunces',serif;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.2);cursor:pointer;font-style:italic;-webkit-tap-highlight-color:transparent;">pentru mine · adult</button>
-</div>
-
 </body>
 </html>
