@@ -615,7 +615,89 @@ function drawBG(){
 }
 drawBG();
 
-// DATE EMOTII
+// URL Worker Cloudflare — returneaza lista fisierelor din R2
+const WORKER_URL = 'https://pic-audio-list.cabinet-cristina.workers.dev';
+
+const BASE_URL = 'https://audio.picaudio.app/';
+const PREFIX = {
+  eu:         { somn:'somn', tristete:'tristete', fericire:'fericire', frica:'frica', furie:'furie', exercitii:'exercitii' },
+  mic:        { somn:'somnmic', tristete:'tristetemic', fericire:'fericiremic', frica:'fricamic', furie:'furiemic', exercitii:'exercitimic' },
+  mijlociu:   { somn:'somnmijlociu', tristete:'tristetemijlociu', fericire:'fericireMijlociu', frica:'fricaMijlociu', furie:'furieMijlociu', exercitii:'exercitiMijlociu' },
+  adolescent: { somn:'somnadolescent', tristete:'tristeteadolescent', fericire:'fericireAdolescent', frica:'fricaAdolescent', furie:'furieAdolescent', exercitii:'exercitiAdolescent' },
+};
+
+function getAudioUrl(mod, emotie, nr) {
+  const p = (PREFIX[mod] || PREFIX.eu)[emotie] || emotie;
+  return BASE_URL + p + nr + '.mp3';
+}
+
+// Cache local al fisierelor existente — se incarca o singura data
+let fisiereCached = null;
+
+async function getFisiere() {
+  if (fisiereCached) return fisiereCached;
+  try {
+    const r = await fetch(WORKER_URL);
+    fisiereCached = await r.json();
+  } catch(e) {
+    fisiereCached = [];
+  }
+  return fisiereCached;
+}
+
+async function deschideEmotie(emotie) {
+  const data = (episoadeMod[modCurent] && episoadeMod[modCurent][emotie])
+    ? episoadeMod[modCurent][emotie]
+    : emotiiData[emotie];
+  if(!data) return;
+
+  document.getElementById('pG1').setAttribute('stop-color', data.c1);
+  document.getElementById('pG2').setAttribute('stop-color', data.c2);
+  document.getElementById('pG3').setAttribute('stop-color', data.c3);
+
+  satelitiVisible = false;
+  for(let i=0;i<6;i++) document.getElementById('sat'+i).classList.remove('visible');
+  document.getElementById('hint').classList.add('hidden');
+  document.getElementById('picText').classList.add('hidden');
+
+  document.getElementById('contentTitle').innerHTML = data.title;
+  document.getElementById('contentSub').textContent = data.sub;
+
+  const epList = document.getElementById('epList');
+  epList.innerHTML = '<div style="text-align:center;padding:2rem;color:rgba(255,255,255,0.25);font-family:\'Fraunces\',serif;font-style:italic;font-size:0.85rem;">🌙</div>';
+
+  document.getElementById('contentPanel').classList.add('open');
+  document.getElementById('backBtn').classList.add('show');
+
+  // Ia lista fisierelor din Worker
+  const fisiere = await getFisiere();
+
+  epList.innerHTML = '';
+  data.eps.forEach((ep, i) => {
+    const nr = i + 1;
+    const p = (PREFIX[modCurent] || PREFIX.eu)[emotie] || emotie;
+    const numeFisier = p + nr + '.mp3';
+    const activ = fisiere.includes(numeFisier);
+    const url = BASE_URL + numeFisier;
+    const isFree = i === 0;
+
+    const row = document.createElement('div');
+    row.className = 'ep-row';
+    row.innerHTML = `
+      <span class="ep-num">${ep.num}</span>
+      <div class="ep-info">
+        <div class="ep-title">${ep.title}${isFree ? '<span class="badge-free">GRATUIT</span>' : ''}</div>
+        <div class="ep-desc">${ep.desc}</div>
+      </div>
+      <span class="ep-dur">${ep.dur}</span>
+      <button class="ep-play"
+        style="background:${activ ? `linear-gradient(135deg,${data.c1},${data.c3})` : 'rgba(255,255,255,0.1)'};
+               opacity:${activ ? 1 : 0.3}; cursor:${activ ? 'pointer' : 'default'}"
+        ${activ ? `onclick="deschidePlayer('${ep.title.replace(/'/g,"\\'")}','${url}','${data.c1}','${data.c3}','${data.title}')"` : ''}>▶</button>
+    `;
+    epList.appendChild(row);
+  });
+}
 const emotiiData = {
   somn: {
     title:'🌙 Somn liniștit',
@@ -849,48 +931,19 @@ function deschidePoveste() {
   document.getElementById('backBtn').classList.add('show');
 }
 
-function deschideEmotie(emotie) {
-  const data = (episoadeMod[modCurent] && episoadeMod[modCurent][emotie])
-    ? episoadeMod[modCurent][emotie]
-    : emotiiData[emotie];
-  if(!data) return;
-
-  document.getElementById('pG1').setAttribute('stop-color', data.c1);
-  document.getElementById('pG2').setAttribute('stop-color', data.c2);
-  document.getElementById('pG3').setAttribute('stop-color', data.c3);
-
-  satelitiVisible = false;
-  for(let i=0;i<6;i++) document.getElementById('sat'+i).classList.remove('visible');
-  document.getElementById('hint').classList.add('hidden');
-  document.getElementById('picText').classList.add('hidden');
-
-  document.getElementById('contentTitle').innerHTML = data.title;
-  document.getElementById('contentSub').textContent = data.sub;
-
-  const epList = document.getElementById('epList');
-  epList.innerHTML = '';
-  data.eps.forEach(ep => {
-    const row = document.createElement('div');
-    row.className = 'ep-row';
-    const canPlay = ep.free && ep.src;
-    row.innerHTML = `
-      <span class="ep-num">${ep.num}</span>
-      <div class="ep-info">
-        <div class="ep-title">${ep.title}${ep.free?'<span class="badge-free">GRATUIT</span>':''}</div>
-        <div class="ep-desc">${ep.desc}</div>
-      </div>
-      <span class="ep-dur">${ep.dur}</span>
-      <button class="ep-play"
-        style="background:${canPlay ? `linear-gradient(135deg,${data.c1},${data.c3})` : 'rgba(255,255,255,0.1)'};
-               opacity:${canPlay ? 1 : 0.35}; cursor:${canPlay ? 'pointer' : 'default'}"
-        ${canPlay ? `onclick="deschidePlayer('${ep.title.replace(/'/g,"\\'")}','${ep.src}','${data.c1}','${data.c3}','${data.title}')"` : ''}>▶</button>
-    `;
-    epList.appendChild(row);
-  });
-
-  document.getElementById('contentPanel').classList.add('open');
-  document.getElementById('backBtn').classList.add('show');
+// Construiește URL după convenția de nume
+function audioUrl(mod, emotie, nr) {
+  const base = 'https://audio.picaudio.app/';
+  const prefix = {
+    eu:         { somn:'somn', tristete:'tristete', fericire:'fericire', frica:'frica', furie:'furie', exercitii:'exercitii' },
+    mic:        { somn:'somnmic', tristete:'tristetemic', fericire:'fericiremic', frica:'fricamic', furie:'furiemic', exercitii:'exercitimic' },
+    mijlociu:   { somn:'somnmijlociu', tristete:'tristetemijlociu', fericire:'fericireMijlociu', frica:'fricaMijlociu', furie:'furieMijlociu', exercitii:'exercitiMijlociu' },
+    adolescent: { somn:'somnadolescent', tristete:'tristeteadolescent', fericire:'fericireAdolescent', frica:'fricaAdolescent', furie:'furieAdolescent', exercitii:'exercitiAdolescent' }
+  };
+  const p = (prefix[mod] || prefix.eu)[emotie] || emotie;
+  return base + p + nr + '.mp3';
 }
+
 
 function inchideContent() {
   document.getElementById('contentPanel').classList.remove('open');
